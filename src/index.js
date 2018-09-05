@@ -7,6 +7,8 @@ import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import MoviePage from "./components/MoviePage";
 
 const store = createStore(
   rootReducer,
@@ -14,13 +16,24 @@ const store = createStore(
 );
 ReactDOM.render(
   <Provider store={store}>
-    <div className="ui container">
-      <div className="ui three item menu">
-        <a href="#" className="item">Home</a>
-        <a href="#" className="item">Movies</a>
-        <a href="#" className="item">Add New Movie</a>
+    <Router>
+      <div className="ui container">
+        <div className="ui three item menu">
+          <NavLink exact activeClassName="active" className="item" to="/">
+            Home
+          </NavLink>
+          <NavLink exact activeClassName="active" className="item" to="/movies">
+            Movies
+          </NavLink>
+          <NavLink exact activeClassName="active" className="item" to="/movies/new">
+            Add New Movie
+          </NavLink>
+        </div>
+        <Route exact path="/" component={App} />
+        <Route exact path="/movies" component={MoviePage} />
+        
       </div>
-      <App /></div>
+    </Router>
   </Provider>,
   document.getElementById("root")
 );
