@@ -9,10 +9,11 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import MoviePage from "./components/MoviePage";
+import thunk from 'redux-thunk';
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(logger))
+  composeWithDevTools(applyMiddleware(thunk, logger))
 );
 ReactDOM.render(
   <Provider store={store}>
