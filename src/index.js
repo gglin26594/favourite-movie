@@ -18,6 +18,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <div className="ui container">
+        <h2>My Favourite Movies</h2>
         <div className="ui three item menu">
           <NavLink exact activeClassName="active" className="item" to="/">
             Home
