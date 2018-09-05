@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 //make it as a stateless component
 const MovieList = ({movies}) => {
-	console.log(movies);
 	const emptyMessage = (
 		<p>Your favourite movie list is empty. Go add one...</p>
 	);
