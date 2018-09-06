@@ -1,0 +1,17 @@
+import express from 'express';
+import mongodb from "mongodb";
+
+const app = express();
+const dbUrl = "mongodb://localhost/db";
+
+mongodb.MongoClient.connect () => {
+    if (err) throw err;
+    const db = client.db("db");
+    app.get("/api/movies", (req, res) => {
+        db.collection("movies").find({}).toArray((err, movies) => {
+            res.json({movies});
+        })
+    });
+}
+
+app.listen(8080, ()=>console.log("server is running at port 8080."));
