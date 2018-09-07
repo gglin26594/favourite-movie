@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import { connect } from "react-redux";
 import { saveMovie } from "../actions";
+import { Redirect } from "react-router-dom";
 
 class MovieForm extends Component {
   state = {
     title: "",
     cover: "",
     errors: {},
-    isLoading: false
+    isLoading: false,
+    done: false
   };
 
   handleOnChange = e => {
@@ -36,8 +38,10 @@ class MovieForm extends Component {
     let isValid = Object.keys(errors).length === 0;
     if (isValid) {
       const { title, cover } = this.state;
-      this.props.saveMovie(title, cover).then(
-        () => {},
+      this.props.saveMovie({ title, cover }).then(
+        () => {
+          this.setState({ done: true });
+        },
         err => {
           err.response.json().then(({ errors }) => {
             this.setState({ errors, isLoading: false });
@@ -47,8 +51,9 @@ class MovieForm extends Component {
       this.setState({ isLoading: true });
     }
   }
+
   render() {
-    return (
+    const form = (
       <div>
         <form
           className={classnames("ui", "form", {
@@ -57,7 +62,9 @@ class MovieForm extends Component {
         >
           <h1>Add a new movie</h1>
           {!!this.state.errors.global && (
-            <div className="ui negative message">{this.state.errors.global}</div>
+            <div className="ui negative message">
+              {this.state.errors.global}
+            </div>
           )}
           <div
             className={classnames("field", {
@@ -108,6 +115,7 @@ class MovieForm extends Component {
         </form>
       </div>
     );
+    return <div>{this.state.done ? <Redirect to="/movies" /> : form}</div>;
   }
 }
 export default connect(

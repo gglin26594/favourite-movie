@@ -1,4 +1,4 @@
-import { SET_MOVIES} from "../constants";
+import { SET_MOVIES, ADD_MOVIE} from "../constants";
 
 export const setMovies = data => {
   return {
@@ -6,6 +6,14 @@ export const setMovies = data => {
     data
   };
 };
+
+export const addMovie = (movie) => {
+  return {
+    type: ADD_MOVIE,
+    movie
+  }
+}
+
 const handleRes = (res) => {
   if(res.ok) {
     return res.json();
@@ -18,13 +26,14 @@ const handleRes = (res) => {
 
 export const saveMovie = (data) => {
   return dispatch => {
-    return fetch("api/games", {
+    return fetch("/api/movies", {
       method: "post",
       body: JSON.stringify(data),
       headers: {
-        "content-type" : "application/json"
+        "Content-Type" : "application/json"
       }
     }).then(handleRes)
+    .then(data=>dispatch(addMovie(data.movie)))
   }
 }
 

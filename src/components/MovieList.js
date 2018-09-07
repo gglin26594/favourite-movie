@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import MovieCard from "../components/MovieCard";
 
 //make it as a stateless component
 const MovieList = ({movies}) => {
@@ -7,7 +8,14 @@ const MovieList = ({movies}) => {
 		<p>Your favourite movie list is empty. Go add one...</p>
 	);
 	const movieList = (
-		<p>Movie List</p>
+		<div className="ui four cards">
+			{movies.map((movieItem)=>{
+				return (
+					<MovieCard movieItem={movieItem} key={movieItem.id} />
+				)
+			})
+			}
+		</div>
 	);
 	return (<div>
 		{movies.length === 0 ? emptyMessage : movieList}

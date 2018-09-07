@@ -1,4 +1,4 @@
-import {SET_MOVIES, SAVE_MOVIES} from "../constants";
+import {SET_MOVIES, SAVE_MOVIES, ADD_MOVIE} from "../constants";
 
 const movies = (state=[], action={})=> {
     switch(action.type) {
@@ -7,6 +7,9 @@ const movies = (state=[], action={})=> {
         }
         case SAVE_MOVIES: {
             return state;
+        }
+        case ADD_MOVIE: {
+            return [...state, action.movie]
         }
         default: return state;
     }

@@ -1,31 +1,34 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import MovieList from './MovieList'
-import {fetchMovies} from '../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import MovieList from "./MovieList";
+import { fetchMovies } from "../actions";
 
 class MoviePage extends Component {
-	componentDidMount() {
-		this.props.fetchMovies();
-	}
-	render() {
-		return (
-			<div>
-					<MovieList movies={this.props.movies} />
-			</div>
-		);
-	}
+  componentDidMount() {
+    this.props.fetchMovies();
+  }
+  render() {
+    return (
+      <div>
+        <MovieList movies={this.props.movies} />
+      </div>
+    );
+  }
 }
 
 MoviePage.propTypes = {
-	movies: PropTypes.array.isRequired,
-	fetchMovies: PropTypes.func.isRequired
-}
+  movies: PropTypes.array.isRequired,
+  fetchMovies: PropTypes.func.isRequired
+};
 
-const mapStateToProps = (state)=> {
-	return {
-		movies: state.movies,
-	}
-}
+const mapStateToProps = state => {
+  return {
+    movies: state.movies
+  };
+};
 
-export default connect(mapStateToProps, {fetchMovies})(MoviePage);
+export default connect(
+  mapStateToProps,
+  { fetchMovies }
+)(MoviePage);
