@@ -14,6 +14,14 @@ mongodb.MongoClient.connect (dbUrl, (err, client) => {
         })
     });
 
+    app.use((req, res) => {
+        res.status(404).json({
+            errors: {
+                global: "Resource Not Found..."
+            }
+        })
+    });
+
     app.listen(8080, ()=>console.log("server is running at port 8080."));
 });
 

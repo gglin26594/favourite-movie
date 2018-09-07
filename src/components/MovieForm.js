@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import classnames from "classnames";
-import {connect} from "react-redux";
-import{saveMovie} from "../actions";
+import { connect } from "react-redux";
+import { saveMovie } from "../actions";
 
 class MovieForm extends Component {
   state = {
     title: "",
     cover: "",
-    errors: {}, 
-    isLoading: false,
+    errors: {},
+    isLoading: false
   };
 
   handleOnChange = e => {
@@ -18,7 +18,7 @@ class MovieForm extends Component {
         delete errors[e.target.name];
         this.setState({ errors });
       }
-    } 
+    }
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -34,17 +34,31 @@ class MovieForm extends Component {
     }
     this.setState({ errors });
     let isValid = Object.keys(errors).length === 0;
-    if(isValid) {
-      const {title, cover} = this.state;
-      this.props.saveMovie(title, cover);
-      this.setState({isLoading: true});
+    if (isValid) {
+      const { title, cover } = this.state;
+      this.props.saveMovie(title, cover).then(
+        () => {},
+        err => {
+          err.response.json().then(({ errors }) => {
+            this.setState({ errors, isLoading: false });
+          });
+        }
+      );
+      this.setState({ isLoading: true });
     }
   }
   render() {
     return (
       <div>
-        <form className={classnames("ui", "form" ,{loading: this.state.isLoading})}>
+        <form
+          className={classnames("ui", "form", {
+            loading: this.state.isLoading
+          })}
+        >
           <h1>Add a new movie</h1>
+          {!!this.state.errors.global && (
+            <div className="ui negative message">{this.state.errors.global}</div>
+          )}
           <div
             className={classnames("field", {
               error: !!this.state.errors.title
@@ -96,4 +110,7 @@ class MovieForm extends Component {
     );
   }
 }
-export default connect(null, {saveMovie})(MovieForm);
+export default connect(
+  null,
+  { saveMovie }
+)(MovieForm);
