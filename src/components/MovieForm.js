@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import classnames from "classnames";
+import {connect} from "react-redux";
+import{saveMovie} from "../actions";
 
 class MovieForm extends Component {
   state = {
     title: "",
     cover: "",
-    errors: {}
+    errors: {}, 
+    isLoading: false,
   };
 
   handleOnChange = e => {
@@ -30,11 +33,17 @@ class MovieForm extends Component {
       errors.cover = "Cover URL can NOT be empty.";
     }
     this.setState({ errors });
+    let isValid = Object.keys(errors).length === 0;
+    if(isValid) {
+      const {title, cover} = this.state;
+      this.props.saveMovie(title, cover);
+      this.setState({isLoading: true});
+    }
   }
   render() {
     return (
       <div>
-        <form className="ui form">
+        <form className={classnames("ui", "form" ,{loading: this.state.isLoading})}>
           <h1>Add a new movie</h1>
           <div
             className={classnames("field", {
@@ -87,4 +96,4 @@ class MovieForm extends Component {
     );
   }
 }
-export default MovieForm;
+export default connect(null, {saveMovie})(MovieForm);
