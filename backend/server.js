@@ -30,6 +30,14 @@ mongodb.MongoClient.connect (dbUrl, (err, client) => {
         })
     });
 
+    app.get("/api/movies/:id", (req, res) => {
+        db.collection("movies").findOne(
+            {_id: new mongodb.ObjectId(req.params.id)}, (err, movie) => {
+                res.json(movie);
+            }
+        );
+    });
+
     app.post("/api/movies", (req, res) => {
         const {errors, isValid} = validate(req.body);
         if(isValid) {

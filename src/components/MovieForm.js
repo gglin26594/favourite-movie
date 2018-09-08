@@ -1,17 +1,32 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import { connect } from "react-redux";
-import { saveMovie } from "../actions";
+import { saveMovie, fetchMovie } from "../actions";
 import { Redirect } from "react-router-dom";
 
 class MovieForm extends Component {
   state = {
-    title: "",
-    cover: "",
+    title: this.props.movie ? this.props.movie.title : "",
+    cover: this.props.movie ? this.props.movie.cover : "",
     errors: {},
     isLoading: false,
     done: false
   };
+
+  componentDidMount() {
+    const {match} = this.props;
+    if(match.params.id) {
+      this.props.fetchMovie(match.params.id);
+    }
+  }
+
+  //??
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      title: nextProps.movie.title,
+      cover: nextProps.movie.cover,
+    });
+  }
 
   handleOnChange = e => {
     if (!!this.state.errors[e.target.name]) {
@@ -118,7 +133,19 @@ class MovieForm extends Component {
     return <div>{this.state.done ? <Redirect to="/movies" /> : form}</div>;
   }
 }
+
+const mapStateToProps = (state, props) => {
+  const {match} = props;
+  if(match.params.id) {
+    return {
+      movie: state.movies.find(item => item._id === match.params.id)
+    }
+  }
+
+  return {movie: null};
+}
+
 export default connect(
-  null,
-  { saveMovie }
+  mapStateToProps,
+  { saveMovie, fetchMovie }
 )(MovieForm);

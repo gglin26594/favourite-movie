@@ -11,7 +11,7 @@ const MovieList = ({movies}) => {
 		<div className="ui four cards">
 			{movies.map((movieItem)=>{
 				return (
-					<MovieCard movieItem={movieItem} key={movieItem.id} />
+					<MovieCard movieItem={movieItem} key={movieItem._id} />
 				)
 			})
 			}

@@ -35,6 +35,7 @@ ReactDOM.render(
         <Route exact path="/" component={App} />
         <Route exact path="/movies" component={MoviePage} />
         <Route exact path="/movies/new" component={MovieForm} />
+        <Route exact path="/movies/:id" component={MovieForm} />
       </div>
     </Router>
   </Provider>,
