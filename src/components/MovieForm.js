@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import { connect } from "react-redux";
-import { saveMovie, fetchMovie } from "../actions";
+import { saveMovie, fetchMovie, updateMovie } from "../actions";
 import { Redirect } from "react-router-dom";
 
 class MovieForm extends Component {
   state = {
+    _id: null,
     title: this.props.movie ? this.props.movie.title : "",
     cover: this.props.movie ? this.props.movie.cover : "",
     errors: {},
@@ -23,6 +24,7 @@ class MovieForm extends Component {
   //??
   componentWillReceiveProps(nextProps){
     this.setState({
+      _id: nextProps.movie._id,
       title: nextProps.movie.title,
       cover: nextProps.movie.cover,
     });
@@ -52,17 +54,31 @@ class MovieForm extends Component {
     this.setState({ errors });
     let isValid = Object.keys(errors).length === 0;
     if (isValid) {
-      const { title, cover } = this.state;
-      this.props.saveMovie({ title, cover }).then(
-        () => {
-          this.setState({ done: true });
-        },
-        err => {
-          err.response.json().then(({ errors }) => {
-            this.setState({ errors, isLoading: false });
-          });
-        }
-      );
+      const { _id, title, cover } = this.state;
+      if(_id) {
+        this.props.updateMovie({ _id, title, cover }).then(
+          () => {
+            this.setState({ done: true });
+          },
+          err => {
+            err.response.json().then(({ errors }) => {
+              this.setState({ errors, isLoading: false });
+            });
+          }
+        );
+      } else {
+        this.props.saveMovie({ title, cover }).then(
+          () => {
+            this.setState({ done: true });
+          },
+          err => {
+            err.response.json().then(({ errors }) => {
+              this.setState({ errors, isLoading: false });
+            });
+          }
+        );
+      }
+
       this.setState({ isLoading: true });
     }
   }
@@ -147,5 +163,5 @@ const mapStateToProps = (state, props) => {
 
 export default connect(
   mapStateToProps,
-  { saveMovie, fetchMovie }
+  { saveMovie, fetchMovie, updateMovie }
 )(MovieForm);

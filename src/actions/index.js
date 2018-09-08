@@ -1,4 +1,4 @@
-import { SET_MOVIES, ADD_MOVIE, MOVIE_FETCHED} from "../constants";
+import { SET_MOVIES, ADD_MOVIE, MOVIE_FETCHED, MOVIE_UPDATED} from "../constants";
 
 export const setMovies = data => {
   return {
@@ -21,6 +21,28 @@ export const fetchMovie = (id) => {
     .then (data => dispatch(movieFetched(data)))
   }
 }
+
+export const updateMovie = (data) => {
+  return dispatch => {
+    return fetch(`/api/movies/${data._id}`, {
+      method: "put",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type" : "application/json"
+      }
+    }).then(handleRes)
+    .then(data=>dispatch(movieUpdated(data.movie)))
+  }
+}
+
+export const movieUpdated = (movie) => {
+  return {
+    type: MOVIE_UPDATED,
+    movie
+  }
+}
+
+
 
 export const movieFetched = (data) => {
   return {
