@@ -10,7 +10,7 @@ import { logger } from "redux-logger";
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import MoviePage from "./components/MoviePage";
 import thunk from 'redux-thunk';
-import MovieForm from "./components/MovieForm";
+import MovieFormPage from "./components/MovieFormPage";
 
 const store = createStore(
   rootReducer,
@@ -34,8 +34,8 @@ ReactDOM.render(
         </div>
         <Route exact path="/" component={App} />
         <Route exact path="/movies" component={MoviePage} />
-        <Route exact path="/movies/new" component={MovieForm} />
-        <Route exact path="/movies/:id" component={MovieForm} />
+        <Route exact path="/movies/new" component={MovieFormPage} />
+        <Route exact path="/movies/:id" component={MovieFormPage} />
       </div>
     </Router>
   </Provider>,

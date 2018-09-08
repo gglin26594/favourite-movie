@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import classnames from "classnames";
-import { connect } from "react-redux";
-import { saveMovie, fetchMovie, updateMovie } from "../actions";
-import { Redirect } from "react-router-dom";
+
 
 class MovieForm extends Component {
   state = {
@@ -11,18 +9,12 @@ class MovieForm extends Component {
     cover: this.props.movie ? this.props.movie.cover : "",
     errors: {},
     isLoading: false,
-    done: false
   };
 
-  componentDidMount() {
-    const {match} = this.props;
-    if(match.params.id) {
-      this.props.fetchMovie(match.params.id);
-    }
-  }
 
   //??
   componentWillReceiveProps(nextProps){
+    console.log(nextProps);
     this.setState({
       _id: nextProps.movie._id,
       title: nextProps.movie.title,
@@ -55,31 +47,12 @@ class MovieForm extends Component {
     let isValid = Object.keys(errors).length === 0;
     if (isValid) {
       const { _id, title, cover } = this.state;
-      if(_id) {
-        this.props.updateMovie({ _id, title, cover }).then(
-          () => {
-            this.setState({ done: true });
-          },
-          err => {
-            err.response.json().then(({ errors }) => {
-              this.setState({ errors, isLoading: false });
-            });
-          }
-        );
-      } else {
-        this.props.saveMovie({ title, cover }).then(
-          () => {
-            this.setState({ done: true });
-          },
-          err => {
-            err.response.json().then(({ errors }) => {
-              this.setState({ errors, isLoading: false });
-            });
-          }
-        );
-      }
-
       this.setState({ isLoading: true });
+      this.props.saveMovie({_id, title, cover}).catch(err => {
+				err.response.json().then(({ errors }) => {
+					this.setState({ errors, isLoading: false });
+				});
+			})
     }
   }
 
@@ -146,22 +119,9 @@ class MovieForm extends Component {
         </form>
       </div>
     );
-    return <div>{this.state.done ? <Redirect to="/movies" /> : form}</div>;
+    return <div>{form}</div>;
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const {match} = props;
-  if(match.params.id) {
-    return {
-      movie: state.movies.find(item => item._id === match.params.id)
-    }
-  }
 
-  return {movie: null};
-}
-
-export default connect(
-  mapStateToProps,
-  { saveMovie, fetchMovie, updateMovie }
-)(MovieForm);
+export default MovieForm;
