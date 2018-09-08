@@ -1,4 +1,4 @@
-import {SET_MOVIES, SAVE_MOVIES, ADD_MOVIE, MOVIE_FETCHED, MOVIE_UPDATED} from "../constants";
+import {SET_MOVIES, SAVE_MOVIES, ADD_MOVIE, MOVIE_FETCHED, MOVIE_UPDATED, MOVIE_DELETED} from "../constants";
 
 const movies = (state=[], action={})=> {
     switch(action.type) {
@@ -28,6 +28,11 @@ const movies = (state=[], action={})=> {
                 if(item._id === action.movie._id) return action.movie;
                 return item;
             });
+        }
+        case MOVIE_DELETED : {
+            
+            console.log(action.id);
+            return  state.filter(item => item._id!== action.id);
         }
         default: return state;
     }

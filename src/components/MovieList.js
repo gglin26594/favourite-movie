@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MovieCard from "../components/MovieCard";
 
 //make it as a stateless component
-const MovieList = ({movies}) => {
+const MovieList = ({movies, deleteMovie}) => {
 	const emptyMessage = (
 		<p>Your favourite movie list is empty. Go add one...</p>
 	);
@@ -11,7 +11,7 @@ const MovieList = ({movies}) => {
 		<div className="ui four cards">
 			{movies.map((movieItem)=>{
 				return (
-					<MovieCard movieItem={movieItem} key={movieItem._id} />
+					<MovieCard movieItem={movieItem} key={movieItem._id} deleteMovie={deleteMovie} />
 				)
 			})
 			}

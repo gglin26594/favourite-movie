@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const MovieCard = ({ movieItem }) => {
+const MovieCard = ({ movieItem, deleteMovie }) => {
 	return (
 		<div className="ui card">
 			<div className="image">
@@ -17,7 +17,7 @@ const MovieCard = ({ movieItem }) => {
 					>
 						Edit
 					</Link>
-					<div className="ui basic button red">Delete</div>
+					<div className="ui basic button red" onClick={()=>deleteMovie(movieItem._id)}>Delete</div>
 				</div>
 			</div>
 		</div>
